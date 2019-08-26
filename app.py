@@ -86,9 +86,9 @@ def display_stats(team):
     for player in team['players']:
         if player['experience'] is True:
             count_exp += 1
-    print('\nNumber of Experienced Palyers: {}'.format(count_exp))
+    print('\nNumber of Experienced players: {}'.format(count_exp))
     # Number of inexperienced players
-    print('\nNumber of Inexperienced Palyers: {}'
+    print('\nNumber of Inexperienced players: {}'
           .format(len(team['players']) - count_exp))
     # Average height of the team
     height = []
