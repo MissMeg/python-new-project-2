@@ -12,3 +12,5 @@ Create structures to store and organize a team of Basketball players into distri
 * `if __name__ == "__main__":` = Dunder main
 * Calculations = total, average, etc.
 * Pep8 standards
+* Docstrings
+* Type Hints
