@@ -5,6 +5,7 @@ from constants import TEAMS, PLAYERS
 # import only system from os
 from os import system, name
 import math
+from typing import List, Dict
 
 
 # define our clear function
@@ -18,14 +19,14 @@ def clear():
 
 
 # Clean the player data
-def clean_player_data(PLAYERS):
+def clean_player_data(PLAYERS: List[dict]) -> List[dict]:
     # List of player data to use for organizing teams
-    exp_players = []
-    inexp_players = []
+    exp_players = []  # type: List[dict]
+    inexp_players = []  # type: List[dict]
     # Loop through players to clean data
     for player in PLAYERS:
         # Create holder for the data
-        add_player_data = {}
+        add_player_data = {}  # type: dict
         # Add player name
         add_player_data["name"] = player["name"]
         # Clean the guardian field -> split up into a list
@@ -48,8 +49,8 @@ def clean_player_data(PLAYERS):
 
 
 # Setup data from file
-def prep_teams(teams):
-    team_prep = []
+def prep_teams(teams: List[str]) -> List[dict]:
+    team_prep = []  # type: List[dict]
     for team in teams:
         team_prep.append({"team": team, "players": []})
     return team_prep
@@ -57,7 +58,7 @@ def prep_teams(teams):
 
 # Balance the players across the teams
 # Equal experience levels on teams
-def balance_teams(players, teams):
+def balance_teams(players: List[dict], teams: List[dict]) -> List[dict]:
     count = 0
     # groups = exp and inexp lists
     for group in players:
@@ -75,14 +76,14 @@ def balance_teams(players, teams):
 
 
 # Display the stats:
-def display_stats(team):
+def display_stats(team: List[dict]):
     # Team name
     print('\n{} Stats'.format(team['team']))
     print('\n-------------------')
     # Total players on team
     print('\nNumber of Players: {}'.format(len(team['players'])))
     # Number of experienced players
-    count_exp = 0
+    count_exp = 0  # type: int
     for player in team['players']:
         if player['experience'] is True:
             count_exp += 1
@@ -91,19 +92,19 @@ def display_stats(team):
     print('\nNumber of Inexperienced players: {}'
           .format(len(team['players']) - count_exp))
     # Average height of the team
-    height = []
+    height = []  # type: List[int]
     for player in team['players']:
         height.append(player['height'])
     average_height = math.floor(sum(height) / len(height))
     print("\nAverage Height: {} inches".format(average_height))
     # Player names separated by commas
-    player_names = []
+    player_names = []  # type: List[str]
     for player in team['players']:
         player_names.append(player['name'])
     print('\nPlayers:')
     print('\n{}'.format(', '.join(player_names)))
     # Guardians of all the players -> comma separated string
-    guardian_names = []
+    guardian_names = []  # type: List[str]
     for player in team['players']:
         for guardian in player['guardians']:
             guardian_names.append(guardian)
@@ -119,12 +120,13 @@ if __name__ == "__main__":
     while displaying_data:
         clear()
         # get data to display
-        data = balance_teams(clean_player_data(PLAYERS), prep_teams(TEAMS))
+        data = balance_teams(clean_player_data(PLAYERS),
+                             prep_teams(TEAMS))  # type: List[dict]
         # print start menu
         print('\nTeam Stats Tool')
         print('\n---- MENU ----')
         print('\nChoose one of the following options:')
-        count = 1
+        count = 1  # type: int
         for team in data:
             print('\n{}) Display {} stats'.format(count, team['team']))
             count += 1
