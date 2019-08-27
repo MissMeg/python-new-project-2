@@ -10,6 +10,7 @@ from typing import List, Dict
 
 # define our clear function
 def clear():
+    """Clears the terminal window for a better user experience"""
     # for windows
     if name == 'nt':
         _ = system('cls')
@@ -20,6 +21,13 @@ def clear():
 
 # Clean the player data
 def clean_player_data(PLAYERS: List[dict]) -> List[dict]:
+    """
+    Cleans the player data.
+    - player['name'] = str
+    - player['guardians'] = List[str]
+    - player['experience'] = bool
+    - player['height'] = int
+    """
     # List of player data to use for organizing teams
     exp_players = []  # type: List[dict]
     inexp_players = []  # type: List[dict]
@@ -50,6 +58,7 @@ def clean_player_data(PLAYERS: List[dict]) -> List[dict]:
 
 # Setup data from file
 def prep_teams(teams: List[str]) -> List[dict]:
+    """Sets up each team as a dict and returns a list of dicts"""
     team_prep = []  # type: List[dict]
     for team in teams:
         team_prep.append({"team": team, "players": []})
@@ -59,6 +68,7 @@ def prep_teams(teams: List[str]) -> List[dict]:
 # Balance the players across the teams
 # Equal experience levels on teams
 def balance_teams(players: List[dict], teams: List[dict]) -> List[dict]:
+    """Organizes players into equal teams and returns list of dicts"""
     count = 0
     # groups = exp and inexp lists
     for group in players:
@@ -77,6 +87,7 @@ def balance_teams(players: List[dict], teams: List[dict]) -> List[dict]:
 
 # Display the stats:
 def display_stats(team: List[dict]):
+    """Prints out the team's stats"""
     # Team name
     print('\n{} Stats'.format(team['team']))
     print('\n-------------------')
