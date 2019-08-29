@@ -1,15 +1,12 @@
 # Code written by Megan Amendola
 
-# Import player data
 from constants import TEAMS, PLAYERS
-# import only system from os
 from os import system, name
 import math
 from typing import List, Dict
 
 
-# define our clear function
-def clear():
+def clear_screen():
     """Clears the terminal window for a better user experience"""
     # for windows
     if name == 'nt':
@@ -19,7 +16,6 @@ def clear():
         _ = system('clear')
 
 
-# Clean the player data
 def clean_player_data(PLAYERS: List[dict]) -> List[dict]:
     """
     Cleans the player data.
@@ -28,26 +24,20 @@ def clean_player_data(PLAYERS: List[dict]) -> List[dict]:
     - player['experience'] = bool
     - player['height'] = int
     """
-    # List of player data to use for organizing teams
+    # Split player data by exp to create even teams
     exp_players = []  # type: List[dict]
     inexp_players = []  # type: List[dict]
-    # Loop through players to clean data
     for player in PLAYERS:
-        # Create holder for the data
         add_player_data = {}  # type: dict
-        # Add player name
         add_player_data["name"] = player["name"]
-        # Clean the guardian field -> split up into a list
         if "and" in player["guardians"]:
             add_player_data["guardians"] = player["guardians"].split(' and ')
         else:
             add_player_data["guardians"] = [player["guardians"]]
-        # Clean experience -> Bool
         if player["experience"] == 'YES':
             add_player_data["experience"] = True
         else:
             add_player_data["experience"] = False
-        # Clean height -> Int
         add_player_data["height"] = int(player['height'].split(' ')[0])
         if add_player_data['experience'] is True:
             exp_players.append(add_player_data)
@@ -56,7 +46,6 @@ def clean_player_data(PLAYERS: List[dict]) -> List[dict]:
     return exp_players, inexp_players
 
 
-# Setup data from file
 def prep_teams(teams: List[str]) -> List[dict]:
     """Sets up each team as a dict and returns a list of dicts"""
     team_prep = []  # type: List[dict]
@@ -65,27 +54,20 @@ def prep_teams(teams: List[str]) -> List[dict]:
     return team_prep
 
 
-# Balance the players across the teams
-# Equal experience levels on teams
 def balance_teams(players: List[dict], teams: List[dict]) -> List[dict]:
     """Organizes players into equal teams and returns list of dicts"""
     count = 0
-    # groups = exp and inexp lists
     for group in players:
-        # each player within each list
         for player in group:
-            # add player to team
             teams[count]['players'].append(player)
             # add to count so the next player
             # is added to the next team
             count += 1
-            # reset count
             if count == len(teams):
                 count = 0
     return teams
 
 
-# Display the stats:
 def display_stats(team: List[dict]):
     """Prints out the team's stats"""
     # Team name
@@ -124,38 +106,35 @@ def display_stats(team: List[dict]):
 
 
 if __name__ == "__main__":
-    # Console readability matters
-    # set variable for the program
     displaying_data = True
 
     while displaying_data:
-        clear()
-        # get data to display
-        data = balance_teams(clean_player_data(PLAYERS),
-                             prep_teams(TEAMS))  # type: List[dict]
-        # print start menu
+        clear_screen()
+        team_data = balance_teams(clean_player_data(PLAYERS),
+                                  prep_teams(TEAMS))  # type: List[dict]
+        # start menu
         print('\nTeam Stats Tool')
         print('\n---- MENU ----')
         print('\nChoose one of the following options:')
         count = 1  # type: int
-        for team in data:
+        for team in team_data:
             print('\n{}) Display {} stats'.format(count, team['team']))
             count += 1
-        print('\n{}) Quit\n'.format(len(data) + 1))
-        # make sure their choice is a number
+        print('\n{}) Quit\n'.format(len(team_data) + 1))
+        # check choice
         try:
             response = int(input('Your choice: '))
         except ValueError:
-            clear()
+            clear_screen()
             input('\nYou must input a number. Press "Enter" to try again.')
         else:
-            if response == (len(data) + 1):
+            if response == (len(team_data) + 1):
                 displaying_data = False
-            elif response <= len(data):
-                display_stats(data[response - 1])
+            elif response <= len(team_data):
+                display_stats(team_data[response - 1])
                 input('\nPress "Enter" to return to the main menu.')
             else:
-                clear()
+                clear_screen()
                 input(
                     '\nThat number is not valid. Press "Enter" to try again.'
                 )
